@@ -12,8 +12,8 @@ const app = express();
 const PORT = 3000;
 
 // ── Paths ─────────────────────────────────────────────────────────────────────
-const DATA_FILE      = path.join(__dirname, 'data', 'incidents.json');
-const HELPLINES_FILE = path.join(__dirname, 'data', 'helplines.json');
+const DATA_FILE      = path.join(__dirname, 'incidents.json');
+const HELPLINES_FILE = path.join(__dirname, 'helplines.json');
 
 // ── Admin Config ──────────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = 'uecs@2026';

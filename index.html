@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UECS | Unified Emergency Coordination System</title>
+  <meta name="description" content="A real-world prototype for connecting police, fire, and medical emergency services into a unified coordination platform.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@400;700;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="glass-nav">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="material-symbols-outlined logo-icon">shield</span>
+        <span class="logo-text">UECS</span>
+      </div>
+      <nav class="desktop-nav">
+        <a href="#dashboard" data-i18n="nav_cmd_center">Command Center</a>
+        <a href="#helplines" data-i18n="nav_erm_numbers">Emergency Numbers</a>
+        <a href="#map-section" data-i18n="nav_live_map">Live Map</a>
+        <a href="#workflow" data-i18n="nav_how_it_works">How It Works</a>
+        <a href="#about" data-i18n="nav_about">About</a>
+      </nav>
+      <div class="nav-actions">
+        <select id="lang-select" class="lang-select" title="Change Language">
+          <option value="en">EN</option>
+          <option value="hi">HI</option>
+          <option value="mr">MR</option>
+          <option value="gu">GU</option>
+        </select>
+        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <span class="material-symbols-outlined">light_mode</span>
+        </button>
+        <button class="nav-btn emergency-trigger">
+          <span class="material-symbols-outlined">warning</span> SOS
+        </button>
+        <a href="/admin.html" class="nav-btn-admin" data-i18n="nav_admin_portal">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          Admin Portal
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg-glow glow-red"></div>
+    <div class="hero-bg-glow glow-blue"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Real-World Prototype System</div>
+      <h1>From Chaos to <span class="gradient-text text-glow">Coordination</span></h1>
+      <p class="hero-subtext">A unified command platform connecting Police, Fire, and Medical emergency services seamlessly in real-time during critical disaster response.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary pulse-btn emergency-trigger">
+          <span class="material-symbols-outlined">contact_emergency</span>
+          Report Emergency Now
+        </button>
+        <a href="#helplines" class="btn btn-secondary">
+          <span class="material-symbols-outlined">call</span>
+          Emergency Numbers
+        </a>
+        <a href="/admin.html" class="btn btn-admin-hero">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          Admin Login
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard / Command Center -->
+  <section id="dashboard" class="dashboard glass-panel container">
+    <div class="section-header">
+      <h2 data-i18n="dashboard_title">Command Center Dashboard</h2>
+      <p data-i18n="dashboard_subtitle">Real-time overview of active, pending, and resolved incidents across all divisions.</p>
+    </div>
+
+    <!-- My Report Status Tracker (Inline Dashboard Version) -->
+    <div id="my-report-tracker" class="my-report-tracker">
+      <div class="mrt-header">
+        <span class="material-symbols-outlined mrt-header-icon">my_location</span>
+        <div class="mrt-header-text">
+          <div class="mrt-title" data-i18n="mrt_title">My Emergency Report</div>
+          <div class="mrt-id" id="mrt-id">Report #—</div>
+        </div>
+      </div>
+      <div class="mrt-body">
+        <div class="mrt-row">
+          <span class="material-symbols-outlined">emergency_share</span>
+          <span data-i18n="mrt_type_label">Type:</span>
+          <strong id="mrt-type">—</strong>
+        </div>
+        <div class="mrt-row">
+          <span class="material-symbols-outlined">fiber_manual_record</span>
+          <span data-i18n="mrt_status_label">Status:</span>
+          <span id="mrt-status" class="mrt-status-pill">Pending</span>
+        </div>
+        <div class="mrt-row">
+          <span class="material-symbols-outlined">schedule</span>
+          <span data-i18n="mrt_eta_label">ETA:</span>
+          <strong id="mrt-eta" class="mrt-eta-val">— min</strong>
+        </div>
+        <div class="mrt-row">
+          <span class="material-symbols-outlined">location_on</span>
+          <span data-i18n="mrt_location_label">Location:</span>
+          <span id="mrt-location" style="font-size:.8rem;color:var(--text-secondary)">GPS Pinned</span>
+        </div>
+      </div>
+      <div class="mrt-footer">
+        <span class="material-symbols-outlined" style="font-size:.85rem;color:var(--green)">wifi</span>
+        <span id="mrt-last-updated" style="font-size:.75rem;color:var(--text-secondary)" data-i18n="mrt_syncing">Syncing…</span>
+        <span class="mrt-live-dot"></span>
+      </div>
+      <div class="mrt-calm-strip">
+        <span class="material-symbols-outlined" style="font-size:.9rem">favorite</span>
+        <span data-i18n="dont_panic_help">Don't Panic — Help is on the way</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="material-symbols-outlined icon-red">local_fire_department</span>
+          <span data-i18n="stat_active_incidents">Active Incidents</span>
+        </div>
+        <div class="stat-value" id="stat-active">142</div>
+        <div class="stat-trend trend-down">
+          <span class="material-symbols-outlined">trending_down</span> <span data-i18n="stat_active_trend">-12% vs last hour</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="material-symbols-outlined icon-blue">local_police</span>
+          <span data-i18n="stat_units_deployed">Units Deployed</span>
+        </div>
+        <div class="stat-value" id="stat-units">384</div>
+        <div class="stat-trend trend-up">
+          <span class="material-symbols-outlined">trending_up</span> <span data-i18n="stat_units_trend">Updating live</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="material-symbols-outlined icon-green">check_circle</span>
+          <span data-i18n="stat_resolved_today">Resolved Today</span>
+        </div>
+        <div class="stat-value" id="stat-resolved">1,024</div>
+        <div class="stat-trend trend-up">
+          <span class="material-symbols-outlined">trending_up</span> <span data-i18n="stat_resolved_trend">Steady flow</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="material-symbols-outlined icon-yellow">warning</span>
+          <span data-i18n="stat_system_status">System Status</span>
+        </div>
+        <div class="stat-value status-fine" data-i18n="stat_system_optimal">Optimal</div>
+        <div class="stat-trend" data-i18n="stat_system_trend">All subsystems running natively</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ EMERGENCY HELPLINES SECTION ═══════════ -->
+  <section id="helplines" class="helplines-section container">
+    <div class="section-header">
+      <h2 data-i18n="helplines_title">Emergency Helpline Numbers</h2>
+      <p data-i18n="helplines_subtitle">Official Indian emergency contact numbers — saved and managed in real-time by the command authority.</p>
+    </div>
+    <div class="helplines-filter-bar">
+      <button class="hf-btn active" data-cat="All" data-i18n="hf_all">All</button>
+      <button class="hf-btn" data-cat="Police" data-i18n="hf_police">Police</button>
+      <button class="hf-btn" data-cat="Fire" data-i18n="hf_fire">Fire</button>
+      <button class="hf-btn" data-cat="Medical" data-i18n="hf_medical">Medical</button>
+      <button class="hf-btn" data-cat="Disaster" data-i18n="hf_disaster">Disaster</button>
+      <button class="hf-btn" data-cat="General" data-i18n="hf_general">General</button>
+    </div>
+    <div class="helplines-grid" id="helplines-grid">
+      <!-- Injected by app.js -->
+      <div class="helpline-skeleton"></div>
+      <div class="helpline-skeleton"></div>
+      <div class="helpline-skeleton"></div>
+      <div class="helpline-skeleton"></div>
+      <div class="helpline-skeleton"></div>
+      <div class="helpline-skeleton"></div>
+    </div>
+  </section>
+
+  <!-- Live Map Section -->
+  <section id="map-section" class="map-section container">
+    <div class="section-header">
+      <h2 data-i18n="map_title">Live Coordination Map</h2>
+      <p data-i18n="map_subtitle">Visualizing team tracking and incident severity in real-time. (Simulated)</p>
+    </div>
+    <div class="map-container glass-panel">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-item"><span class="dot dot-red"></span> <span data-i18n="leg_fire">Fire / Critical</span></div>
+        <div class="legend-item"><span class="dot dot-blue"></span> <span data-i18n="leg_police">Police / Security</span></div>
+        <div class="legend-item"><span class="dot dot-green"></span> <span data-i18n="leg_medical">Medical / EMS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow / How it works -->
+  <section id="workflow" class="workflow container">
+    <div class="section-header text-center">
+      <h2 data-i18n="how_title">How UECS Works</h2>
+      <p data-i18n="how_subtitle">A streamlined process to drastically reduce response times and avoid resource duplication.</p>
+    </div>
+    <div class="workflow-grid">
+      <div class="step-card">
+        <div class="step-icon"><span class="material-symbols-outlined">call</span></div>
+        <h3 data-i18n="step1_title">1. Report</h3>
+        <p data-i18n="step1_desc">User signals an emergency with guaranteed location pinning.</p>
+      </div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward_ios</span></div>
+      <div class="step-card">
+        <div class="step-icon"><span class="material-symbols-outlined">hub</span></div>
+        <h3 data-i18n="step2_title">2. Allocate</h3>
+        <p data-i18n="step2_desc">System prioritizes incident severity and assigns cross-agency teams.</p>
+      </div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward_ios</span></div>
+      <div class="step-card">
+        <div class="step-icon"><span class="material-symbols-outlined">forum</span></div>
+        <h3 data-i18n="step3_title">3. Coordinate</h3>
+        <p data-i18n="step3_desc">Police, Fire, and Medical share a unified real-time communication line.</p>
+      </div>
+      <div class="step-arrow"><span class="material-symbols-outlined">arrow_forward_ios</span></div>
+      <div class="step-card">
+        <div class="step-icon"><span class="material-symbols-outlined">task_alt</span></div>
+        <h3 data-i18n="step4_title">4. Resolve</h3>
+        <p data-i18n="step4_desc">Command tracks teams until the situation is safely secured.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features List -->
+  <section id="features" class="features container glass-panel">
+    <div class="section-header">
+      <h2 data-i18n="feat_title">Core System Features</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="material-symbols-outlined feature-icon">sync_alt</span>
+        <div class="feature-text">
+          <h3>Real-Time Coordination</h3>
+          <p>Instant intelligence flows between centralized command and frontline responders.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="material-symbols-outlined feature-icon">dashboard_customize</span>
+        <div class="feature-text">
+          <h3>Centralized Command</h3>
+          <p>A smart master interface managing disparate emergency channels.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="material-symbols-outlined feature-icon">speed</span>
+        <div class="feature-text">
+          <h3>Reduced Response Time</h3>
+          <p>Smart resource allocation drastically cuts down life-threatening delays.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="material-symbols-outlined feature-icon">savings</span>
+        <div class="feature-text">
+          <h3>Low-Cost Implementation</h3>
+          <p>Built as a software layer utilizing existing infrastructure, GPS, and dispatch protocols.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / Objectives -->
+  <section id="about" class="about-section container">
+    <div class="about-grid">
+      <div class="about-text glass-panel">
+        <h2 class="alert-text" data-i18n="about_prob_title">The Problem: Disconnected Response</h2>
+        <p data-i18n="about_prob_desc">During large-scale disasters, the lack of a unified command center results in chaotic responses, dangerous duplication of efforts, and delayed critical care.</p>
+        <h2 class="solution-text mt-4" data-i18n="about_sol_title">The Solution / UECS</h2>
+        <p data-i18n="about_sol_desc">UECS breaks down the silos. By merging all real-time incident tracking, dispatch communication, and resource allocation into a single unified platform, we create an impenetrable safety net.</p>
+      </div>
+      <div class="objectives-panel glass-panel">
+        <h3 data-i18n="about_obj_title">System Objectives</h3>
+        <ul class="objectives-list">
+          <li>
+            <div class="obj-icon"><span class="material-symbols-outlined">check_circle</span></div>
+            <p><strong>Improve Coordination</strong> between isolated state emergency departments.</p>
+          </li>
+          <li>
+            <div class="obj-icon"><span class="material-symbols-outlined">check_circle</span></div>
+            <p><strong>Reduce Delays</strong> through automated localized dispatch algorithms.</p>
+          </li>
+          <li>
+            <div class="obj-icon"><span class="material-symbols-outlined">check_circle</span></div>
+            <p><strong>Avoid Duplication</strong> of assets dispatched to single incidents.</p>
+          </li>
+          <li>
+            <div class="obj-icon"><span class="material-symbols-outlined">check_circle</span></div>
+            <p><strong>Enable Communication</strong> via immediate, cross-agency data links.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+    <div class="footer-content container">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="material-symbols-outlined logo-icon">shield</span>
+          <span class="logo-text">UECS</span>
+        </div>
+        <p class="tagline">From Chaos to Coordination.</p>
+        <div class="footer-portal-links">
+          <a href="/admin.html" class="footer-admin-link">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            Admin Portal
+          </a>
+        </div>
+      </div>
+      <div class="footer-info">
+        <h4>Project Details</h4>
+        <p>Academic Use Prototype</p>
+        <p>Student Project Demonstration</p>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>contact@uecs-prototype.local</p>
+        <p>System Version 2.0.0</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 UECS Project Team. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Emergency Reporting Modal -->
+  <div id="emergency-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel glow-border-red">
+      <button class="close-modal material-symbols-outlined" id="close-modal-btn">close</button>
+      <div class="modal-header">
+        <span class="material-symbols-outlined giant-icon">emergency</span>
+        <h2 data-i18n="modal_fast_report">FAST REPORT</h2>
+      </div>
+
+      <!-- Step 1: GPS -->
+      <div id="step-gps" class="modal-step active">
+        <p class="modal-subtitle" data-i18n="modal_gps_subtitle">Auto-detecting exact coordinates...</p>
+        <div class="location-status">
+          <div class="radar-scan"></div>
+          <span id="loc-text" class="loc-text-loading" data-i18n="modal_gps_loading">Establishing secure GPS link</span>
+        </div>
+      </div>
+
+      <!-- Step 2: Type -->
+      <div id="step-type" class="modal-step hidden">
+        <h3 data-i18n="modal_type_title">Select Emergency Nature</h3>
+        <div class="service-grid">
+          <button class="service-btn btn-police" onclick="submitEmergency('Police')">
+            <span class="material-symbols-outlined">local_police</span>
+            <span data-i18n="modal_btn_police">Police / Security</span>
+          </button>
+          <button class="service-btn btn-fire" onclick="submitEmergency('Fire')">
+            <span class="material-symbols-outlined">local_fire_department</span>
+            <span data-i18n="modal_btn_fire">Fire / Rescue</span>
+          </button>
+          <button class="service-btn btn-medical" onclick="submitEmergency('Medical')">
+            <span class="material-symbols-outlined">medical_services</span>
+            <span data-i18n="modal_btn_medical">Medical / EMS</span>
+          </button>
+        </div>
+        <p class="help-text">Select nearest match. Dispatchers will adjust if needed.</p>
+      </div>
+
+      <!-- Step 3: Submission Confirmed -->
+      <div id="step-success" class="modal-step hidden text-center">
+        <div class="submit-confirm-ring">
+          <span class="material-symbols-outlined submit-check-icon">check_circle</span>
+        </div>
+        <h3 class="submit-title" data-i18n="modal_success_title">Report Submitted!</h3>
+        <p class="submit-calm-msg"><span data-i18n="modal_success_desc1">Your emergency report has been received by the UECS command centre.</span><br><span data-i18n="modal_success_desc2_1">Nearest</span> <strong id="dispatched-type" class="highlight-type">units</strong> <span data-i18n="modal_success_desc2_2">are being dispatched.</span></p>
+        <div class="submit-dont-panic">
+          <span class="material-symbols-outlined">favorite</span>
+          <span data-i18n="dont_panic_help">Don't Panic — Help is on the way</span>
+        </div>
+        <div class="submit-eta-row">
+          <span class="material-symbols-outlined">schedule</span>
+          <span data-i18n="modal_eta_val">Estimated arrival:</span> <strong><span id="random-eta">18</span> <span data-i18n="modal_eta_mins">minutes</span></strong>
+        </div>
+        <p class="submit-track-hint" data-i18n="modal_track_hint">We'll track your report status below once you close this window.</p>
+        <button class="btn btn-submit-close mt-4 w-full" onclick="closeModal()">
+          <span class="material-symbols-outlined">check</span>
+          <span data-i18n="modal_btn_ok">OK, Got it — Track My Report</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script src="lang.js"></script>
+  <script src="theme-lang.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

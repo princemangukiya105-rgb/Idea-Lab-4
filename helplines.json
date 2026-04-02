@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Police Emergency",
+    "number": "100",
+    "category": "Police",
+    "icon": "local_police",
+    "description": "National police emergency helpline. Available 24/7 across all states.",
+    "color": "blue",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Fire Brigade",
+    "number": "101",
+    "category": "Fire",
+    "icon": "local_fire_department",
+    "description": "Fire rescue and emergency services. Covers structural fires, gas leaks and rescues.",
+    "color": "red",
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "Ambulance / Medical",
+    "number": "102",
+    "category": "Medical",
+    "icon": "medical_services",
+    "description": "National ambulance service. Free emergency medical transport for critical patients.",
+    "color": "green",
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "National Emergency",
+    "number": "112",
+    "category": "General",
+    "icon": "emergency",
+    "description": "Single unified emergency number for Police, Fire and Ambulance. Works pan-India.",
+    "color": "yellow",
+    "active": true
+  },
+  {
+    "id": 5,
+    "name": "Disaster Management",
+    "number": "108",
+    "category": "Disaster",
+    "icon": "crisis_alert",
+    "description": "NDRF helpline for floods, earthquakes, cyclones and mass casualty events.",
+    "color": "orange",
+    "active": true
+  },
+  {
+    "id": 6,
+    "name": "Snake Bite / Poison",
+    "number": "1800-22-1234",
+    "category": "Medical",
+    "icon": "vaccines",
+    "description": "Poison control and anti-venom helpline. Also handles dog bite, insect sting, scorpion sting, chemical exposure.",
+    "color": "green",
+    "active": true
+  },
+  {
+    "id": 7,
+    "name": "Dog Bite / Animal Attack",
+    "number": "1962",
+    "category": "Medical",
+    "icon": "pets",
+    "description": "Animal control and anti-rabies helpline. Report stray animals and animal attacks. Anti-rabies vaccination guidance.",
+    "color": "green",
+    "active": true
+  },
+  {
+    "id": 8,
+    "name": "Women Safety Helpline",
+    "number": "1091",
+    "category": "Police",
+    "icon": "woman",
+    "description": "Dedicated helpline for women in distress. Available 24/7. Immediate police response guaranteed.",
+    "color": "blue",
+    "active": true
+  },
+  {
+    "id": 9,
+    "name": "Child Helpline",
+    "number": "1098",
+    "category": "General",
+    "icon": "child_care",
+    "description": "CHILDLINE India — for children in danger, abuse, lost children or child labour situations.",
+    "color": "yellow",
+    "active": true
+  },
+  {
+    "id": 10,
+    "name": "Road Accident Emergency",
+    "number": "1033",
+    "category": "Medical",
+    "icon": "car_crash",
+    "description": "National Highway accident helpline. Immediate ambulance dispatch for road accident victims.",
+    "color": "green",
+    "active": true
+  },
+  {
+    "id": 11,
+    "name": "Suicide Prevention",
+    "number": "iCall: 9152987821",
+    "category": "Medical",
+    "icon": "psychology",
+    "description": "Mental health and suicide crisis helpline. Confidential support available every day.",
+    "color": "green",
+    "active": true
+  },
+  {
+    "id": 12,
+    "name": "Coastal / Sea Rescue",
+    "number": "1554",
+    "category": "Disaster",
+    "icon": "sailing",
+    "description": "Indian Coast Guard emergency for drowning, sea accidents, and coastal disasters.",
+    "color": "orange",
+    "active": true
+  },
+  {
+    "id": 13,
+    "name": "Electricity Emergency",
+    "number": "1912",
+    "category": "Disaster",
+    "icon": "bolt",
+    "description": "Electrical faults, live wire accidents, transformer fires and power outages.",
+    "color": "orange",
+    "active": true
+  },
+  {
+    "id": 14,
+    "name": "Gas Leak Emergency",
+    "number": "1906",
+    "category": "Fire",
+    "icon": "gas_meter",
+    "description": "Petroleum and natural gas leak response. Covers PNG, LPG and CNG line ruptures.",
+    "color": "red",
+    "active": true
+  },
+  {
+    "id": 15,
+    "name": "Senior Citizen Helpline",
+    "number": "14567",
+    "category": "General",
+    "icon": "elderly",
+    "description": "Elder care and elder abuse helpline managed by Ministry of Social Justice.",
+    "color": "yellow",
+    "active": true
+  },
+  {
+    "id": 16,
+    "name": "Flood Relief Helpline",
+    "number": "1078",
+    "category": "Medical",
+    "icon": "flood",
+    "description": "National Flood Relief Helpline for emergency assistance during floods.",
+    "color": "yellow",
+    "active": true
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "uecs-unified-emergency-coordination-system",
+  "version": "1.0.0",
+  "description": "Unified Emergency Coordination System - Academic Prototype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2"
+  },
+  "author": "UECS Project Team",
+  "license": "MIT"
+}
